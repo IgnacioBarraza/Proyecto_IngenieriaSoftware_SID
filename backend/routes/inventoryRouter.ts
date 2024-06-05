@@ -1,8 +1,9 @@
 import express from 'express'
 import { randomUUID } from 'crypto'
+import mysql from 'mysql2/promise'
 
 import { connect } from '../utils/db'
-import { verifyInventory } from '../schemas/inventorySchema'
+import { verifyInventory, verifyUpdatedInventory } from '../schemas/inventorySchema'
 import authorizeRole from '../middleware/authorizeRole'
 
 const inventoryRouter = express.Router()
@@ -24,11 +25,12 @@ inventoryRouter.post('/new', authorizeRole, async (req, res) => {
         } else {
             const newInventory = {
                 id_inventory: randomUUID(),
-                nombre: verifyData.data.nombre,
-                cantidad: verifyData.data.cantidad
+                nombre_inventario: verifyData.data.nombre,
+                id_equipos: verifyData.data.id_equipos,
+                id_servicios: verifyData.data.id_servicios
             }
 
-            await connection.query(`INSERT INTO inventario (id_inventario, nombre_inventario, cantidad_disponible) VALUES (?, ?, ?)`, [newInventory.id_inventory, newInventory.nombre, newInventory.cantidad])
+            await connection.query(`INSERT INTO inventario (id_inventario, nombre_inventario, id_equipos, id_servicios) VALUES (?, ?, ?, ?)`, [newInventory.id_inventory, newInventory.nombre_inventario, newInventory.id_equipos, newInventory.id_servicios])
 
             return res.status(201).json({ message: 'Inventario creado!' })
         }
@@ -46,22 +48,30 @@ inventoryRouter.put('/update/:id', authorizeRole, async (req, res) => {
     const inventoryId = req.params.id
     const connection = connect()
 
-    const verifyData = verifyInventory(req.body)
+    const verifyData = verifyUpdatedInventory(req.body)
 
     if (verifyData.error) {
         return res.status(400).json({ message: JSON.parse(verifyData.error.message)[0].message })
     }
 
     try {
-        const searchInventario = await connection.query(`SELECT * FROM inventario WHERE id_inventario = ?`, [inventoryId])
+        const [row, fields] = await connection.query(`SELECT * FROM inventario WHERE id_inventario = ?`, [inventoryId])
+        const inventario = row as mysql.RowDataPacket[]
 
-        if (Array.isArray(searchInventario[0]) && searchInventario[0].length > 0) {
+        if (Array.isArray(inventario) && inventario.length > 0) {
             const updatedInventory = {
-                nombre: verifyData.data.nombre,
-                cantidad: verifyData.data.cantidad
+                nombre: verifyData.data.nombre ?? inventario[0].nombre_inventario,
+                id_equipos: verifyData.data.id_equipos ?? inventario[0].id_equipos,
+                id_servicios: verifyData.data.id_servicios ?? inventario[0].id_servicios
             }
 
-            await connection.query(`UPDATE inventario SET nombre_inventario = ?, cantidad_disponible = ? WHERE id_inventario = ?`, [updatedInventory.nombre, updatedInventory.cantidad, inventoryId])
+            await connection.query(`
+                UPDATE inventario
+                SET nombre_inventario = ?,
+                id_equipos = ?,
+                id_servicios = ?
+                WHERE id_inventario = ?
+            `, [updatedInventory.nombre, updatedInventory.id_equipos, updatedInventory.id_servicios, inventoryId])
 
             return res.status(200).json({ message: 'Inventario actualizado!' })
         } else {
