@@ -15,8 +15,7 @@ campaignRouter.get('/', async (req, res) => {
 
         return res.status(200).json(row)
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error al intentar obtener las campañas.' })
+        return res.status(500).json({ message: 'Hubo un error al intentar obtener las campañas.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -50,8 +49,7 @@ campaignRouter.post('/new', authorizeRole, async (req, res) => {
             return res.status(201).json({ message: 'Campaña añadida exitosamente!', id: campaignData.id_campanha })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error intentando guardar la campaña en la base de datos.' })
+        return res.status(500).json({ message: 'Hubo un error intentando guardar la campaña en la base de datos.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -90,8 +88,7 @@ campaignRouter.put('/update/:id', authorizeRole, async (req, res) => {
             return res.status(404).json({ message: 'La campaña no existe en la base de datos.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error actualizando la campaña.' })
+        return res.status(500).json({ message: 'Hubo un error actualizando la campaña.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -113,8 +110,7 @@ campaignRouter.delete('/delete/:id', authorizeRole, async (req, res) => {
             return res.status(404).json({ message: 'La campaña no existe en la base de datos.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error al intentar eliminar la campaña.' })
+        return res.status(500).json({ message: 'Hubo un error al intentar eliminar la campaña.', error })
     } finally {
         if (connection) {
             connection.end()

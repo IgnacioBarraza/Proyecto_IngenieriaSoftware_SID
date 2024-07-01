@@ -15,8 +15,7 @@ mediaRouter.get('/', async (req, res) => {
 
         return res.status(200).json(row)
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar obtener los datos.' })
+        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar obtener los datos.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -51,8 +50,7 @@ mediaRouter.post('/new', authorizeRole, async (req, res) => {
             return res.status(201).json({ message: 'Medio de comunicación creada!', id: newMedia.id_medio })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error intentando añadir el medio de comunicación a la base de datos.' })
+        return res.status(500).json({ message: 'Hubo un error intentando añadir el medio de comunicación a la base de datos.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -91,8 +89,7 @@ mediaRouter.put('/update/:id', authorizeRole, async (req, res) => {
             return res.status(404).json({ message: 'Medio de comunicación no encontrado.' })
         }
     } catch (error) {
-        // console.log(error)
-        res.status(500).json({ message: 'Hubo un error intentando actualizar el medio de comunicación.' })
+        res.status(500).json({ message: 'Hubo un error intentando actualizar el medio de comunicación.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -115,8 +112,7 @@ mediaRouter.delete('/delete/:id', authorizeRole, async (req, res) => {
             return res.status(400).json({ message: 'Medio de comunicación no encontrado.' })
         }
     } catch (error) {
-        // console.log(error)
-        res.status(500).json({ message: 'Hubo un problema intentando eliminar el medio de comunicación.' })
+        res.status(500).json({ message: 'Hubo un problema intentando eliminar el medio de comunicación.', error })
     } finally {
         if (connection) {
             connection.end()

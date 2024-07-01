@@ -14,8 +14,7 @@ userRouter.get('/', async (req, res) => {
 
         return res.status(200).json(row)
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un problema al obtener datos de los usuarios.' })
+        return res.status(500).json({ message: 'Hubo un problema al obtener datos de los usuarios.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -60,8 +59,7 @@ userRouter.put('/update/:id', authorizeRole, async (req, res) => {
             return res.status(404).json({ message: 'Usuario no encontrado.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error intentando actualizar el usuario.' })
+        return res.status(500).json({ message: 'Hubo un error intentando actualizar el usuario.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -84,8 +82,7 @@ userRouter.delete('/delete/:id', authorizeRole, async (req, res) => {
             return res.status(400).json({ message: 'Usuario no encontrado.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un problema al intentar eliminar el usuario de la base de datos.' })
+        return res.status(500).json({ message: 'Hubo un problema al intentar eliminar el usuario de la base de datos.', error })
     } finally {
         if (connection) {
             connection.end()

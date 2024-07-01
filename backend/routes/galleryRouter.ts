@@ -32,8 +32,7 @@ galleryRouter.post('/new', async (req, res) => {
         await connection.query(`INSERT INTO gallery (id_imagen, id_servicios, imagen_link) VALUES (?, ?, ?)`, [newImage.id_image, newImage.id_servicios, newImage.imagen_link])
         return res.status(201).json({ message: 'La imagen se ha agregado con éxito.',  id: newImage.id_image  })
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error con el servidor. Inténtalo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error con el servidor. Inténtalo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -74,8 +73,7 @@ galleryRouter.put('/update/:id', async (req, res) => {
             return res.status(400).json({ message: 'No hay ninguna imagen asociada.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ messge: 'Hubo un error en el servidor al intentar actualizar los datos de la imagen. Inténtelo más tarde.' })
+        return res.status(500).json({ messge: 'Hubo un error en el servidor al intentar actualizar los datos de la imagen. Inténtelo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -98,8 +96,7 @@ galleryRouter.delete('/delete/:id', async (req, res) => {
             return res.status(400).json({ message: 'No hay ninguna imagen asociada a esa id.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar eliminar la imagen. Intentelo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar eliminar la imagen. Intentelo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()

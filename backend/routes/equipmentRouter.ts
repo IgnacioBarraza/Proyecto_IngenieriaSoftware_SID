@@ -33,8 +33,7 @@ equipmentRouter.post('/new', async (req, res) => {
         await connection.query(`INSERT INTO equipment (id_equipo, nombre_equipo, tipo_equipo, id_servicios) VALUES (?, ?, ?, ?)`, [newItem.id_equipo, newItem.nombre_equipo, newItem.tipo_equipo, newItem.id_servicios])
         return res.status(201).json({ message: 'El equipo se ha guardado con éxito.', id: newItem.id_equipo })
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error al intentar guardar el equipo. Intente más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error al intentar guardar el equipo. Intente más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -76,8 +75,7 @@ equipmentRouter.put('/update/:id', async (req, res) => {
             return res.status(400).json({ message: 'No hay ningún equipo asociado!' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error con el servidor al intentar actualizar el equipo. Intenta más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error con el servidor al intentar actualizar el equipo. Intenta más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -99,8 +97,7 @@ equipmentRouter.delete('/delete/:id', async (req, res) => {
             return res.status(400).json({ message: 'No se ha podido encontrado el equipo.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un problema con el servidor al intentar eliminar el equipo. Inténtalo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un problema con el servidor al intentar eliminar el equipo. Inténtalo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()

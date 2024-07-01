@@ -15,8 +15,7 @@ cartRouter.get('/:id', async (req, res) => {
         const [row, fields] = await connection.query(`SELECT * FROM shopping_cart WHERE id_usuario = ?`, [id])
         return res.status(200).json(row)
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error con el servidor. Inténtalo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error con el servidor. Inténtalo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -51,8 +50,7 @@ cartRouter.post('/new', async (req, res) => {
         await connection.query(`INSERT INTO shopping_cart (id_shopping_cart, id_usuario, valor_total, id_servicios) VALUES (?, ?, ?, ?)`, [newOrder.id_shopping_cart, newOrder.id_usuario, newOrder.valor_total, newOrder.id_servicios])
         return res.status(201).json({ message: 'Orden guardada con éxito!', id: newOrder.id_shopping_cart })
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar guardar la orden.' })
+        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar guardar la orden.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -98,8 +96,7 @@ cartRouter.put('/update/:id', async (req, res) => {
             return res.status(200).json({ message: 'Orden actualizada!' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error al intentar actualizar la orden. Intente más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error al intentar actualizar la orden. Intente más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -122,8 +119,7 @@ cartRouter.delete('/delete/:id', async (req, res) => {
             return res.status(400).json({ message: 'No hay una orden asociada a esa id.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar eliminar la orden. Inténtelo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar eliminar la orden. Inténtelo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()

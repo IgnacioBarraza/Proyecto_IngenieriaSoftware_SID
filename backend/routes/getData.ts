@@ -11,8 +11,7 @@ dataRouter.get('/services', async (req, res) => {
         const [row, fields] = await connection.query(`SELECT * FROM servicios`)
         return res.status(200).json(row)
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error con el servidor. Intente más tarde.s' })
+        return res.status(500).json({ message: 'Hubo un error con el servidor. Intente más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -27,8 +26,7 @@ dataRouter.get('/gallery', async (req, res) => {
         const [row, fields] = await connection.query(`SELECT * FROM gallery`)
         return res.status(200).json(row)
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error en el servidor. Intente más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error en el servidor. Intente más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -44,8 +42,7 @@ dataRouter.get('/inventory', async (req, res) => {
 
         return res.status(200).json(row)
     } catch (error) {
-        // console.log(error)
-        res.status(500).json({ message: 'Hubo un error intentando obtener los artículos del inventario.' })
+        res.status(500).json({ message: 'Hubo un error intentando obtener los artículos del inventario.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -61,8 +58,7 @@ dataRouter.get('/equipment', async (req, res) => {
 
         return res.status(200).json(row)
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error al intentar conseguir los equipos. Intente más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error al intentar conseguir los equipos. Intente más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -75,13 +71,10 @@ dataRouter.get('/collaborations', async (req, res) => {
 
     try {
         const [row, fields] = await connection.query(`SELECT * FROM colaborations`)
-        // const data = await connection.query(`DESCRIBE colaborations`)
-        // console.log(data)
         
         return res.status(200).json(row)
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({ message: 'Hubo un error con el servidor. Inténtalo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error con el servidor. Inténtalo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()

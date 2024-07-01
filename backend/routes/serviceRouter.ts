@@ -34,8 +34,7 @@ serviceRouter.post('/new', async (req, res) => {
         await connection.query(`INSERT INTO servicios (id_servicios, nombre, precio, descripcion, imagen_link) VALUES (?, ?, ?, ?, ?)`, [newService.id_servicios, newService.nombre, newService.precio, newService.descripcion, newService.imagen])
         return res.status(201).json({ message: 'Servicio creado!', id: newService.id_servicios })
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar guardar el servicio. Inténtalo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar guardar el servicio. Inténtalo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -79,8 +78,7 @@ serviceRouter.put('/update/:id', async (req, res) => {
             return res.status(400).json({ message: 'No hay ningún servicio con ese identificador.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error con el servidor al intentar actualziar el servicio. Inténtalo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error con el servidor al intentar actualziar el servicio. Inténtalo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -103,8 +101,7 @@ serviceRouter.delete('/delete/:id', async (req, res) => {
             return res.status(400).json({ message: 'No hay ningún servicio asociado a esa id.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error con el servidor al intentar eliminar el servicio. Inténtalo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error con el servidor al intentar eliminar el servicio. Inténtalo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()

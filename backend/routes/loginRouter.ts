@@ -38,7 +38,7 @@ loginRouter.post('/verify', async (req, res) => {
 
                 if (SECRET) {
                     const token = jwt.sign(userToken, SECRET, {expiresIn: "6h"})
-                    return res.status(200).json({ message: 'Usuario verificado', token, username: user[0].username, tipo_user: user[0].tipo_user, user_id: user[0].id_usuario })
+                    return res.status(200).json({ message: 'Usuario verificado con exito. Redirigiendo...', token, username: user[0].username, tipo_user: user[0].tipo_user, user_id: user[0].id_usuario })
                 } else {
                     return res.status(500).json({ message: 'No se pudo generar el token de autenticación.' })
                 }
@@ -49,8 +49,7 @@ loginRouter.post('/verify', async (req, res) => {
             return res.status(400).json({ message: 'Usuario no encontrado.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un problema al intentar verificar el usuario. Inténtelo más tarde.' })
+        return res.status(500).json({ message: 'Hubo un problema al intentar verificar el usuario. Inténtelo más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -104,8 +103,7 @@ loginRouter.post('/register', async (req, res) => {
 
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un problema con el servidor. Intente más tarde.' })
+        return res.status(500).json({ message: 'Hubo un problema con el servidor. Intente más tarde.', error })
     } finally {
         if (connection) {
             connection.end()
@@ -144,8 +142,7 @@ loginRouter.post('/recover', async (req, res) => {
             return res.status(400).json({ message: 'No hay ningún usuario asociado a ese correo.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar recuperar la contraseña. Intente más tarde.' })
+        return res.status(500).json({ message: 'Hubo un error en el servidor al intentar recuperar la contraseña. Intente más tarde.', error })
     }
 })
 
@@ -212,8 +209,7 @@ loginRouter.patch('/newPassword', async (req, res) => {
             return res.status(401).json({ message: 'Token inválido. Inténtalo nuevamente.' })
         }
     } catch (error) {
-        // console.log(error)
-        return res.status(500).json({ message: Error })
+        return res.status(500).json({ message: 'Error interno del servidor al procesar la solicitud. Por favor, intenta nuevamente más tarde.', error })
     }
 })
 
